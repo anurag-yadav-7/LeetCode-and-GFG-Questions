@@ -1,51 +1,27 @@
-class Solution
-{
-
-    set<vector < int>> res;
-    vector<int> temp;
-
-    public:
-
-        void rec(int ind, vector<int> &nums)
-        {
-           	// cout<<"ind: "<<ind<<endl;
-            if (ind == nums.size())
-            {
-               	// cout<<"Base case..."<<endl;
-                if (temp.size() > 1)
-                    res.insert(temp);
-                return;
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        int n = nums.size();
+        set<vector<int>> result;
+        for (int bitmask = 1; bitmask < (1 << n); bitmask++) {
+            vector<int> sequence;
+            for (int i = 0; i < n; i++) {
+                // check the i-th bit of the bitmask
+                if (((bitmask >> i) & 1) == 1) {
+                    sequence.push_back(nums[i]);
+                }
             }
-
-            
-            if (nums[ind] >= temp.back())
-            {
-               	// cout<<"greater than top... "<<endl;
-                temp.push_back(nums[ind]);
-                rec(ind + 1, nums);
-                temp.pop_back();
-                rec(ind + 1, nums);
-            }
-            else
-            {
-               	// cout<<"case2: not greater than top..."<<endl;
-                rec(ind + 1, nums);
+            if (sequence.size() >= 2) {
+                // check whether the sequence is increasing
+                bool isIncreasing = true;
+                for (int i = 0; i < sequence.size() - 1; i++) {
+                    isIncreasing &= sequence[i] <= sequence[i + 1];
+                }
+                if (isIncreasing) {
+                    result.insert(sequence);
+                }
             }
         }
-
-    vector<vector < int>> findSubsequences(vector<int> &nums)
-    {
-
-        for (int i = 0; i < nums.size(); i++)
-        {
-           	// cout<<"Starting from: "<<nums[i]<<endl;
-            temp.push_back(nums[i]);
-            rec(i + 1, nums);
-            temp.pop_back();
-        }
-        vector<vector < int>> ans;
-        for (auto it: res)
-            ans.push_back(it);
-        return ans;
+        return vector(result.begin(), result.end());
     }
 };
