@@ -1,49 +1,80 @@
 class Solution {
 public:
     
-    void rec(int ind,vector<vector<string>> &res,vector<string> temp,string s)
+    void solve(int i,int j,string s,string &str,vector<string> &res,vector<vector<string>> &ans)
     {
-        if(ind==s.length())
+        // cout<<"curr i: "<<i<<" j: "<<j<<endl;
+        if(i>=s.length() || j>=s.length())
         {
-            res.push_back(temp); //res= 
+            // cout<<"base case found...."<<endl;
+            if(res.size()>1)
+                ans.push_back(res);
             return;
         }
-        
-        // cout<<"ind: "<<ind<<endl;
-        // cout<<"Entering into loop: "<<endl;
-        for(int i=1;ind+i<=s.length();i++) // temp1= 
+     
+        string temp=s.substr(i,j);
+        // cout<<"curr substr: "<<temp<<endl;
+        if(!checkPall(temp))
         {
-            // cout<<"at i: "<<i<<endl;
-            string temp1=s.substr(ind,i);
-            // cout<<"current substr: "<<temp1<<endl;
-            if(isPalindrome(temp1))
-            {
-                temp.push_back(temp1);
-                rec(ind+i,res,temp,s);
-                temp.pop_back();
-            }
+            // cout<<"Not pall...."<<endl;
+            return;
         }
+        // cout<<"pushed to res"<<endl;
+        res.push_back(temp);
+        if((i+j)==s.length())
+        {
+            // cout<<i+j<<" is equals to string len, hence pushed to ans..."<<endl;
+            // if(res.size()==0)
+            //     return;
+            ans.push_back(res);
+            res.pop_back();
+            return;
+        }
+        for(int k=1;(i+j+k)<=s.length();k++)
+        {
+            // cout<<"k: "<<k<<endl;
+            solve(i+j,k,s,str,res,ans);    
+        }
+        res.pop_back();
+        // cout<<"popped from res..."<<endl;
+        return;
         
+            
     }
     
-    bool isPalindrome(string temp)
+    bool checkPall(string s)
     {
-        for(int i=0;i<temp.size()/2;i++)
+        int n=s.length();
+        int i=0,j=n-1;
+        while(i<j)
         {
-            if(temp[i]!=temp[temp.size()-i-1])
+            if(s[i]!=s[j])
                 return false;
+            i++;j--;
         }
         return true;
     }
     
-    
     vector<vector<string>> partition(string s) {
         
-        vector<vector<string>> res;
-        vector<string> temp;
+        vector<string> res;
+        vector<vector<string>> ans;
+        string str="";
+        if(s.length()==1)
+        {
+            str+=s[0];
+            res.push_back(str);
+            ans.push_back(res);
+            return ans;
+        }
         
-        rec(0,res,temp,s);
-        
-        return res;
+        for(int i=1;i<=s.length();i++)
+            solve(0,i,s,str,res,ans);
+        if(s.length()>1 && checkPall(s))
+        {
+            res.push_back(s);
+            ans.push_back(res);
+        }
+        return ans;
     }
 };
