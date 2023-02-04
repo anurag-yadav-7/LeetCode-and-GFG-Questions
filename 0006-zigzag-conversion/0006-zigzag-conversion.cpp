@@ -1,31 +1,35 @@
 class Solution {
 public:
-
     string convert(string s, int numRows) {
-    
-    if(numRows <= 1) return s;
-
-    vector<string>v(numRows, ""); 
-
-    int j = 0, dir = -1;
-
-    for(int i = 0; i < s.length(); i++)
+        
+    bool flag=false;
+    vector<int> arr[numRows];
+    int n=s.length();
+    int itr=0,i=0;
+     
+    if(numRows==1)
+        return s;
+    while(itr<n)
     {
-
-        if(j == numRows - 1 || j == 0) dir *= (-1); 
-		 
-        v[j] += s[i];
-
-        if(dir == 1) j++;
-
-        else j--;
+        // cout<<s[itr]<<" ";
+        if(i==0)
+            flag=true;
+        if(i==(numRows-1))
+            flag=false;
+        arr[i].push_back(s[itr]);
+        if(flag)
+            i++;
+        if(flag==false)
+            i--;
+        itr++;
     }
-
-    string res;
-
-    for(auto &it : v) res += it; 
-
+    
+    string res="";
+    for(int i=0;i<numRows;i++)
+    {
+        for(int j=0;j<arr[i].size();j++)
+            res+=arr[i][j];
+    }
     return res;
-
-    }
+}
 };
