@@ -1,12 +1,19 @@
 class Solution {
 public:
     vector<int> shuffle(vector<int>& nums, int n) {
-        vector<int> res;
-        for(int i=0;i<n;i++)
+   
+        int num1,num2;
+        
+        for(int i=n;i<nums.size();i++)
         {
-            res.push_back(nums[i]);
-            res.push_back(nums[i+n]);
+            nums[i]=(nums[i]*1024)+nums[i-n];
         }
-        return res;
+        int index=0;
+        for(int i=n;i<nums.size();i++,index+=2)
+        { 
+            nums[index]=nums[i]%1024;
+            nums[index+1]=nums[i]/1024;
+        }
+        return nums;
     }
 };
