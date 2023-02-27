@@ -60,12 +60,6 @@ struct Node
         data = x;
         next = NULL;
     }
-    
-    
-    curr->next=prev;
-    prev=curr;
-    curr=next;
-    next=curr->next;
 };
 */
 
@@ -73,56 +67,59 @@ struct Node
 class Solution
 {
 public:
-   
+
     Node *reverse(Node *head, int k)
-       {
-
-//Code for reversing the list and counting the number of nodes into a variable count
-
-        Node* curr=head;
-
-        Node* prev=NULL;
-
-        int count=0;
-
-        while(curr!=NULL){
-
-            Node* next=curr->next;
-
-            curr->next=prev;
-
-            prev=curr;
-
-            curr=next;
-
-            count++;
-
-        }
-
-//Important thing to note that now the starting of the list has prev as the main pointer ans not the head
-
-        Node* temp=prev;
-
-        int i=count-k-1;
-
-        while(i--){
-
+    {
+        if(head->next==NULL)
+            return head;
+        // code here
+        
+        
+        Node* first=head,*second=NULL;
+        Node* temp=head;
+        int count=k-1;
+        
+        while(count--)
+        {
             temp=temp->next;
-
         }
-
-        head->next=prev;
-
-//Now connect the last of the list to the front
-
-        Node* ans=temp->next;
-
+        second=temp->next;
         temp->next=NULL;
-
-//Breaking at the node-k point 
-
-        return ans;
-
+        
+        Node* curr=first,*prev=NULL,*next=first->next;
+        
+        while(next)
+        {
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+            next=curr->next;
+        }
+        curr->next=prev;
+        first=curr;
+        if(second==NULL)
+            return first;
+        Node* res=first;
+        while(first->next)
+        {
+            first=first->next;
+        }
+        curr=second,prev=NULL,next=second->next;
+        
+        while(next)
+        {
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+            next=curr->next;
+        }
+        curr->next=prev;
+        second=curr;
+//      
+        first->next=second;
+        
+        return res;
+        
     }
 };
 
