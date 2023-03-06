@@ -12,7 +12,7 @@ public:
         }
         
         int count=0;
-        for(int i=1;i<10001;i++)
+        for(int i=1;i<2002;i++)
         {
             if(ans[i]==0)
             {
