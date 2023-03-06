@@ -2,7 +2,7 @@ class Solution {
 public:
     int findKthPositive(vector<int>& arr, int k) {
         
-        int ans[10001]={0};
+        int ans[2002]={0};
         int n=arr.size();
         
         for(int i=0;i<n;i++)
