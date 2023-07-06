@@ -9,14 +9,6 @@ public:
         
         while(low<=high && high < n )
         {
-            // cout<<"curr low: "<<nums[low]<<" high: "<<nums[high]<<" sum: "<<sum<<endl;
-            if(sum >= target)
-            {
-                res = min(res,high-low+1);
-            }
-            
-            
-            
             if(sum<target)
             {
                 high++;
@@ -25,6 +17,7 @@ public:
             }
             else
             {
+                res = min(res,high-low+1);
                 sum -= nums[low];
                 low++;
             }
