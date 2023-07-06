@@ -1,10 +1,10 @@
 class Solution {
     
     
-    void rec(int ind, vector<int> &nums, vector<int> &temp, vector<bool> &visited, int n, vector<int> &res, int &k)
+    void rec(int ind, vector<int> &nums, string &ans, vector<bool> &visited, int n, int &k)
     {
         
-        if(temp.size() == n)
+        if(ans.length() == n)
         {
             k--;
             return;
@@ -14,13 +14,13 @@ class Solution {
         {
             if(visited[i]==false)
             {
-                temp.push_back(nums[i]);
+                ans.push_back(nums[i] + 48);
                 visited[i] = true;
-                rec(i, nums, temp, visited, n, res,k);
+                rec(i, nums, ans, visited, n,k);
                 if(k == 0)
                     return;
                 visited[i] = false;
-                temp.pop_back();
+                ans.pop_back();
             }
         }
         
@@ -35,14 +35,9 @@ public:
             nums.push_back(i);
         
         vector<bool> visited(n,false);
-        vector<int> res;
-        vector<int> temp;
-        rec(0, nums,temp, visited, n, res,k);
-
         string ans = "";
-        for(auto it: temp)
-            ans += (char)(it+48); 
-        
+        rec(0, nums,ans, visited, n, k);
+
         return ans;
     }
 };
