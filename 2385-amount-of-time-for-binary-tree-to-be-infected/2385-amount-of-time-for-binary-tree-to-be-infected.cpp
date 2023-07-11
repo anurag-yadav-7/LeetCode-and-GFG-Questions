@@ -11,28 +11,24 @@
  */
 class Solution {
     
-TreeNode* curr;
     
-void rec(TreeNode *root, TreeNode *prev, unordered_map<TreeNode*, vector<TreeNode*>> &mp, int start)
+void rec(TreeNode *root, int prev, unordered_map<int, vector<int>> &mp, int start)
     {
         if(!root)
             return;
         
-        if(root->val == start )
-            curr = root;
-    
         if(root->left)
         {
-            mp[root].push_back(root->left);
-            rec(root->left, root,mp,start);
+            mp[root->val].push_back(root->left->val);
+            rec(root->left, root->val ,mp,start);
         }
         if(root->right)
         {
-            mp[root].push_back(root->right);
-            rec(root->right, root,mp,start);
+            mp[root->val].push_back(root->right->val);
+            rec(root->right, root->val,mp,start);
         }
         if(prev)
-            mp[root].push_back(prev);
+            mp[root->val].push_back(prev);
     }
     
     
@@ -40,16 +36,14 @@ void rec(TreeNode *root, TreeNode *prev, unordered_map<TreeNode*, vector<TreeNod
 public:
     int amountOfTime(TreeNode* root, int start) {
         
-        // if(root->left==NULL && root->right==NULL)
-        //     return 0;
-        unordered_map<TreeNode*, vector<TreeNode*>> mp;
-        rec(root,NULL,mp,start);
+        unordered_map<int, vector<int>> mp;
+        rec(root,0,mp,start);
         
-        queue<TreeNode*> q;
-        q.push(curr);
+        queue<int> q;
+        q.push(start);
         unordered_set<int> st;
-        int level = -1;
-        st.insert(curr->val);
+        int level = 0;
+        st.insert(start);
         
         while(!q.empty())
         {
@@ -58,18 +52,18 @@ public:
             // cout<<"at "<<level<<"th level: ";
             for(int i = 0 ; i<size ; i++)
             {
-                TreeNode* currr = q.front();    
-                st.insert(currr->val);
+                int currr = q.front();    
+                st.insert(currr);
                 // cout<<currr->val<<" ";
                 q.pop();
                 
                 for(auto it: mp[currr])
-                    if(st.find(it->val) == st.end())
+                    if(st.find(it) == st.end())
                         q.push(it);
             }
             // cout<<endl;
         }
         
-        return level;
+        return level-1;
     }
 };
