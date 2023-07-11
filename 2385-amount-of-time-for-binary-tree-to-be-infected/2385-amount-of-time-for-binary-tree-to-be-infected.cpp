@@ -1,69 +1,35 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
-    
-    
-void rec(TreeNode *root, int prev, unordered_map<int, vector<int>> &mp, int start)
-    {
-        if(!root)
-            return;
-        
-        if(root->left)
-        {
-            mp[root->val].push_back(root->left->val);
-            rec(root->left, root->val ,mp,start);
+public:
+    //res to store maximum distance from the first infected node
+    int res = 0;
+    pair<bool,int> dfs(TreeNode* root, int start){
+        if(!root) return {false,0};
+        //return type pair states whether we came across start or not and maximum distance in this call
+        pair<bool,int>p1 = dfs(root->left,start);
+        pair<bool,int>p2 = dfs(root->right,start);
+        // if we find the node then the maximum distance for now will be the maximum of 2 dfs calls and we will send the current distance as 0 to its parent(if exists)
+        if(root->val==start){
+            int temp = max(p2.second,p1.second);
+            res = max(res,temp);
+            return {true,0};
         }
-        if(root->right)
-        {
-            mp[root->val].push_back(root->right->val);
-            rec(root->right, root->val,mp,start);
+        //if we find the start node to any of the dfs calls then the answer will be maximum of its previous value or sum of distance of start from this node and other path
+        if(p1.first){
+            int sum = p1.second+p2.second+1;
+            res = max(res,sum);
+            return {true,p1.second+1};
+        }else if(p2.first){
+            int sum = p1.second+p2.second+1;
+            res = max(res,sum);
+            return {true,p2.second+1};
         }
-        if(prev)
-            mp[root->val].push_back(prev);
+        //If we are still here, it means we have not come across the start node in this dfs call and hence will retuen maximum of 2 dfs calls
+        int sum = max(p1.second,p2.second);
+        return {false,1+sum};
     }
     
-    
-    
-public:
     int amountOfTime(TreeNode* root, int start) {
-        
-        unordered_map<int, vector<int>> mp;
-        rec(root,0,mp,start);
-        
-        queue<int> q;
-        q.push(start);
-        unordered_set<int> st;
-        int level = 0;
-        st.insert(start);
-        
-        while(!q.empty())
-        {
-            level++;
-            int size = q.size();
-            // cout<<"at "<<level<<"th level: ";
-            for(int i = 0 ; i<size ; i++)
-            {
-                int currr = q.front();    
-                st.insert(currr);
-                // cout<<currr->val<<" ";
-                q.pop();
-                
-                for(auto it: mp[currr])
-                    if(st.find(it) == st.end())
-                        q.push(it);
-            }
-            // cout<<endl;
-        }
-        
-        return level-1;
+        dfs(root,start);
+        return res;
     }
 };
