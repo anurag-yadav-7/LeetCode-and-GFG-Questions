@@ -9,7 +9,7 @@
  */
 class Solution {
     
-    void rec(TreeNode *root, TreeNode *prev, map<TreeNode*, vector<TreeNode*>> &mp)
+    void rec(TreeNode *root, TreeNode *prev, unordered_map<TreeNode*, vector<TreeNode*>> &mp)
     {
         if(!root)
             return;
@@ -32,13 +32,13 @@ class Solution {
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         
-        map<TreeNode*, vector<TreeNode*>> mp;
+        unordered_map<TreeNode*, vector<TreeNode*>> mp;
         rec(root,NULL,mp);
         
         vector<int> ans;
         queue<TreeNode*> q;
         q.push(target);
-        set<TreeNode*> st;
+        unordered_set<TreeNode*> st;
         int level = 0;
         st.insert(target);
         
