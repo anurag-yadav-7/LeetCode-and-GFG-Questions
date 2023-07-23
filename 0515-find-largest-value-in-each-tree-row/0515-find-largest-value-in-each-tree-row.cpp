@@ -1,42 +1,27 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
+    vector<int> solution;
 public:
-    vector<int> largestValues(TreeNode* root) {
-        
-        if(!root)
-            return {};
-        vector<int> res;
-        queue<TreeNode*> q;
-        q.push(root);
-        
-        while(!q.empty())
-        {
-            int size = q.size();
-            int maxi = INT_MIN;
-            for(int i = 0 ; i < size ; i++)
-            {
-                TreeNode *curr = q.front();
-                q.pop();
-                maxi = max(maxi , curr->val);
-                
-                if(curr->left)
-                    q.push(curr->left);
-                if(curr->right)
-                    q.push(curr->right);
+    void helper(TreeNode* node, int cl) {
+        if (node == NULL) {
+            return;
+        }
+        if (solution.size() < cl + 1) {
+            solution.push_back(node->val);
+        } else {
+            if (solution[cl] < node->val) {
+                solution[cl] = node->val;
             }
-            res.push_back(maxi);
+        }
+        helper(node->left, cl+1);
+        helper(node->right, cl+1);
+    }
+    vector<int> largestValues(TreeNode* root) {
+    // vector<int> findValueMostElement(TreeNode* root) {
+        if(root == NULL) {
+            return solution;
         }
         
-        return res;
+        helper(root, 0);
+        return solution;
     }
 };
