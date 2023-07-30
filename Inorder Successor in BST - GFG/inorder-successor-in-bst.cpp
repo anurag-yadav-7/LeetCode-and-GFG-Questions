@@ -93,43 +93,22 @@ Node* search(Node* root, int key)
 
 
 // } Driver Code Ends
-/*The structure of Node
 
-struct Node {
-    int data;
-    Node *left;
-    Node *right;
 
-    Node(int val) {
-        data = val;
-        left = right = NULL;
-    }
-};
-*/
 
 class Solution{
     Node* res = NULL;
-    void success(Node *root, Node* x)
+public:
+    Node* inOrderSuccessor(Node *root, Node *x)
     {
-        if(!root) return;
+        if(!root) return res;
         if(root->data > x->data){
-            // cout<<"storing in res: "<<root->data<<endl;
             res = root;
-            success(root->left,x);
+            inOrderSuccessor(root->left,x);
         }
         else if(root->data <= x->data)
-            success(root->right, x);
-    }
-    
-    
-  public:
-    
-    Node * inOrderSuccessor(Node *root, Node *x)
-    {
-        // Node* res = NULL;
-        success(root,x);
+            inOrderSuccessor(root->right, x);
         return res;
-        
     }
 };
 
