@@ -4,28 +4,24 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-    
-    void dfs(int vertex, vector<int> adj[], vector<int> &visited, vector<int> &res)
+  public:    
+    void rec(int vertex, vector<int> adj[], vector<int> &visited, vector<int> &res)
     {
-        if(visited[vertex])
+        if(visited[vertex] == 1)
             return;
             
-        // cout<<"at vertex: "<<vertex<<endl;
-        visited[vertex] = 1;
         res.push_back(vertex);
+        visited[vertex] = 1;
+        for(int i = 0 ; i<adj[vertex].size(); i++)
+            rec(adj[vertex][i], adj, visited, res);
+        return;
         
-        for(int i = 0 ; i<adj[vertex].size() ; i++)
-            dfs(adj[vertex][i], adj, visited, res);
-            
     }
     
-  public:
-    // Function to return a list containing the DFS traversal of the graph.
     vector<int> dfsOfGraph(int V, vector<int> adj[]) {
-        vector<int> visited(V,0);
         vector<int> res;
-        // cout<<"V: "<<V<<endl;
-        dfs(0,adj, visited, res);
+        vector<int> visited(V, 0);
+        rec(0, adj, visited, res);
         return res;
         
     }
