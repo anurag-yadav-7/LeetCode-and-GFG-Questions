@@ -34,7 +34,7 @@ public:
         string temp = "";
         int n = digits.length();
         vector<string> ans;
-        cout<<"digits[0]: "<<digits[0]<<endl;
+        // cout<<"digits[0]: "<<digits[0]<<endl;.
         for(int i = 0 ; i<mp[digits[0]].size() ; i++)
         {
             temp.push_back(mp[digits[0]][i]);
